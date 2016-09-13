@@ -1,0 +1,56 @@
+module fast-app-hello-impl {
+    yang-version 1;
+    namespace "urn:fast:app:hello:impl";
+    prefix "fast-app-hello-impl";
+
+    import config {
+        prefix config;
+        revision-date 2013-04-05;
+    }
+
+    import opendaylight-md-sal-binding {
+        prefix mdsal;
+        revision-date 2013-10-28;
+    }
+
+    import fast-system {
+        prefix fast-system;
+        revision-date 2015-12-17;
+    }
+
+    description
+        "A new FAST application";
+
+    revision "2016-09-02" {
+        description
+            "Initial revision";
+    }
+
+    identity fast-app-hello {
+        base config:module-type;
+        config:java-name-prefix Hello;
+    }
+
+    augment "/config:modules/config:module/config:configuration" {
+        case fast-app-hello {
+            when "/config:modules/config:module/config:type = 'fast-app-hello'";
+            container fast-system {
+                uses config:service-ref {
+                    refine type {
+                        mandatory true;
+                        config:required-identity fast-system:fast-system;
+                    }
+                }
+            }
+
+            container broker {
+                uses config:service-ref {
+                    refine type {
+                        mandatory true;
+                        config:required-identity mdsal:binding-broker-osgi-registry;
+                    }
+                }
+            }
+        }
+    }
+}

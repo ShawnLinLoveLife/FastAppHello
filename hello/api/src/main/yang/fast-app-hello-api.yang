@@ -1,0 +1,9 @@
+module fast-app-hello {
+    yang-version 1;
+    namespace "urn:fast:app:hello";
+    prefix "fast-app-hello";
+
+    revision "2016-09-02" {
+        description "Initial revision of the FAST application hello API";
+    }
+}
